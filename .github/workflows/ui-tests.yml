@@ -1,0 +1,31 @@
+name: UI Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+    env:
+      UI_BASE_URL: ${{ vars.UI_BASE_URL }}
+      UI_USERNAME: ${{ secrets.UI_USERNAME }}
+      UI_PASSWORD: ${{ secrets.UI_PASSWORD }}
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
+      AUTH_HEADER: ${{ secrets.AUTH_HEADER }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: Run UI tests
+        run: npm run test:ui
