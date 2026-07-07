@@ -7,10 +7,10 @@ jobs:
   ui-tests:
     runs-on: ubuntu-latest
     env:
-      UI_BASE_URL: ${{ vars.UI_BASE_URL }}
+      UI_BASE_URL: ${{ vars.UI_BASE_URL || secrets.UI_BASE_URL }}
       UI_USERNAME: ${{ secrets.UI_USERNAME }}
       UI_PASSWORD: ${{ secrets.UI_PASSWORD }}
-      API_BASE_URL: ${{ vars.API_BASE_URL }}
+      API_BASE_URL: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
       AUTH_HEADER: ${{ secrets.AUTH_HEADER }}
     steps:
       - name: Check out repository
@@ -20,6 +20,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Validate UI test environment
+        run: |
+          if [ -z "$UI_BASE_URL" ]; then
+            echo "::error::UI_BASE_URL is required. Add it as a repository variable or secret."
+            exit 1
+          fi
+          if [ -z "$UI_USERNAME" ]; then
+            echo "::error::UI_USERNAME is required. Add it as a repository secret."
+            exit 1
+          fi
+          if [ -z "$UI_PASSWORD" ]; then
+            echo "::error::UI_PASSWORD is required. Add it as a repository secret."
+            exit 1
+          fi
 
       - name: Install dependencies
         run: npm install
