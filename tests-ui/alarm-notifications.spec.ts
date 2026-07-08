@@ -215,7 +215,7 @@ test.describe('alarm notifications', () => {
   test.skip(!env.username || !env.password, 'Set UI_USERNAME and UI_PASSWORD to run this test.');
 
   test('logs in', async ({ page }) => {
-    await page.goto('/login');
+    await page.goto('/');
 
     if (!(await tryFillFirstVisible(page, usernameLocators, env.username!))) {
       await clickFirstVisible(page, signInLocators, 'sign-in entry point');
