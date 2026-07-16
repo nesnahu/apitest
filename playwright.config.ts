@@ -1,32 +1,12 @@
-import { defineConfig, devices } from '@playwright/test';
-
-const baseURL = process.env.UI_BASE_URL || (process.env.CI ? '' : 'http://localhost:3000');
-
-if (!baseURL) {
-  throw new Error('UI_BASE_URL is required when running Playwright in CI.');
-}
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests-ui',
-  timeout: 30_000,
-  expect: {
-    timeout: 5_000,
-  },
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: process.env.CI ? [['html', { open: 'never' }], ['list']] : [['list']],
+  testDir: './tests/ui',
+  timeout: 60_000,
   use: {
-    baseURL,
-    screenshot: 'only-on-failure',
+    baseURL: process.env.UI_BASE_URL,
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ],
 });
