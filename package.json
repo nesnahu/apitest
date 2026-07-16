@@ -1,11 +1,22 @@
 {
-  "name": "apitest",
+  "name": "solar-twin-api-tests",
+  "version": "1.0.0",
   "private": true,
-  "scripts": {"test:ui": "playwright test",
-"test:ui:headed": "playwright test --headed"
-    "test:ui": "playwright test"
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/run-api-tests.mjs",
+    "test:kpi": "node --test --test-reporter=spec tests/kpi.matrix.test.mjs",
+    "report:kpi": "node scripts/run-kpi-matrix.mjs",
+    "test:events": "node --test --test-reporter=spec tests/events.matrix.test.mjs",
+    "report:events": "node scripts/run-events-matrix.mjs",
+    "test:ui": "playwright test",
+    "test:ui:headed": "playwright test --headed",
+    "test:deep": "API_DEEP_SMOKE=true node scripts/run-api-tests.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.45.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
