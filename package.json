@@ -1,7 +1,8 @@
 {
   "name": "apitest",
   "private": true,
-  "scripts": {
+  "scripts": {"test:ui": "playwright test",
+"test:ui:headed": "playwright test --headed"
     "test:ui": "playwright test"
   },
   "devDependencies": {
